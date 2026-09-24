@@ -1,0 +1,6 @@
+{
+  "name": "Physics Learning Portal",
+  "description": "ระบบการเรียนการสอนวิชาฟิสิกส์ออนไลน์ สำหรับนักเรียน ครู และผู้ดูแลระบบ ครบวงจรส่งงาน วิดีโอย้อนหลัง แบบทดสอบ และสรุปสถิติ",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
