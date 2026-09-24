@@ -115,43 +115,57 @@ export const StudentVideos: React.FC = () => {
                   <div className="relative w-full h-full flex items-center justify-center">
                     <video
                       key={selectedVideo.id + '_' + selectedVideo.videoUrl}
+                      src={selectedVideo.videoUrl}
                       controls
                       playsInline
                       preload="metadata"
-                      onError={() => setVideoPlayError(true)}
+                      onCanPlay={() => setVideoPlayError(false)}
+                      onError={(e) => {
+                        const err = e.currentTarget.error;
+                        // Only set error if there's a real fatal error and not just an abort
+                        if (err && err.code !== 1) { // 1 = MEDIA_ERR_ABORTED
+                          setVideoPlayError(true);
+                        }
+                      }}
                       className="w-full h-full object-contain"
                     >
-                      <source src={selectedVideo.videoUrl} type="video/mp4" />
-                      <source src={selectedVideo.videoUrl} type="video/quicktime" />
-                      <source src={selectedVideo.videoUrl} type="video/webm" />
                       เบราว์เซอร์ไม่รองรับการเล่นวิดีโอรูปแบบนี้
                     </video>
 
                     {videoPlayError && (
-                      <div className="absolute inset-0 bg-slate-950/95 text-white flex flex-col items-center justify-center p-6 text-center z-10">
+                      <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-xs text-white flex flex-col items-center justify-center p-6 text-center z-10">
                         <AlertCircle className="w-10 h-10 text-amber-400 mb-2" />
                         <h4 className="font-bold text-sm mb-1">
-                          เบราว์เซอร์บนเครื่องนี้ต้องการเปิดวิดีโอผ่านโปรแกรมเล่นของระบบ
+                          ไม่สามารถเล่นวิดีโอในหน้านี้ได้โดยตรง
                         </h4>
                         <p className="text-xs text-slate-300 max-w-md mb-4">
-                          หากคลิปไม่เริ่มเล่นอัตโนมัติ คุณสามารถคลิกเพื่อเปิดเล่นไฟล์โดยตรงในแท็บใหม่ หรือดาวน์โหลดเพื่อเปิดด้วยแอปไฟล์ได้ทันที
+                          อาจเกิดจากเบราว์เซอร์ยังไม่ได้รับสิทธิ์เข้าถึง (Action required) หรือความปลอดภัยของระบบ กรุณากดลองอีกครั้ง หรือเปิดดูในแท็บใหม่
                         </p>
                         <div className="flex flex-wrap gap-2 justify-center">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setVideoPlayError(false);
+                            }}
+                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md cursor-pointer transition-colors"
+                          >
+                            <RefreshCw className="w-4 h-4" /> ลองเล่นอีกครั้ง (Retry)
+                          </button>
                           <a
                             href={selectedVideo.videoUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md"
+                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 border border-slate-700"
                           >
                             <ExternalLink className="w-4 h-4" /> เปิดดูในแท็บใหม่ (Direct Player)
                           </a>
-                          <a
-                            href={selectedVideo.videoUrl}
-                            download={selectedVideo.fileName || `${selectedVideo.title}.mp4`}
-                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 border border-slate-700"
+                          <button
+                            type="button"
+                            onClick={() => setVideoPlayError(false)}
+                            className="px-3 py-2 bg-transparent hover:bg-white/10 text-slate-400 hover:text-white text-xs rounded-xl"
                           >
-                            <Download className="w-4 h-4" /> ดาวน์โหลดคลิป
-                          </a>
+                            ปิดการแจ้งเตือน
+                          </button>
                         </div>
                       </div>
                     )}

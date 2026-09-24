@@ -503,14 +503,12 @@ export const TeacherVideos: React.FC = () => {
                 return isDirect ? (
                   <video
                     key={previewVideo.id + '_' + previewVideo.videoUrl}
+                    src={previewVideo.videoUrl}
                     controls
                     playsInline
                     preload="metadata"
                     className="w-full h-full object-contain"
                   >
-                    <source src={previewVideo.videoUrl} type="video/mp4" />
-                    <source src={previewVideo.videoUrl} type="video/quicktime" />
-                    <source src={previewVideo.videoUrl} type="video/webm" />
                     เบราว์เซอร์ไม่รองรับการเล่นไฟล์นี้
                   </video>
                 ) : (
